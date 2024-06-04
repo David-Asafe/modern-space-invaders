@@ -27,7 +27,7 @@ class invader {
       this.height
     );
   }
-  update() {
+  update({ velocity }) {
     if (this.image) {
       this.draw();
       this.position.x = this.velocity.x;
@@ -35,7 +35,7 @@ class invader {
     }
   }
 
-  shoot(invaderProjectile) {
+  shoot(invaderProjectile ) {
     audio.enemyShoot.play();
     invaderProjectile.push(
       new InvaderProjectile({
