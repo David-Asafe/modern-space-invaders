@@ -211,19 +211,18 @@ function Animation() {
   });
 }
 
-
 for (let i = projectiles.length - 1; i >= 0; i--) {
   const projectiles = projectiles[i];
 
   for (let j = bombs.length - 1; j >= 0; j--) {
     const bomb = bombs[j];
 
-    if(
+    if (
       Math.hypot(
         projectile.position.x - bomb.position.x,
         projectile.position.y - bomb.position.y
       ) <
-      projectile.radius + bomb.radius &&
+        projectile.radius + bomb.radius &&
       !bomb.active
     ) {
       projectiles.splice(i, 1);
@@ -234,7 +233,7 @@ for (let i = projectiles.length - 1; i >= 0; i--) {
   for (let j = powerUps.length - 1; j >= 0; j--) {
     const powerUp = powerUps[j];
 
-    if(
+    if (
       Math.hypot(
         projectile.position.x - powerUp.position.x,
         projectile.position.y - powerUp.position.y
@@ -251,10 +250,91 @@ for (let i = projectiles.length - 1; i >= 0; i--) {
       }, 5000);
     }
 
-    if(projectile.position.y + projectile.radius <= 0) {
+    if (projectile.position.y + projectile.radius <= 0) {
       projectiles.splice(i, 1);
     } else {
       projectile.update();
     }
   }
+
+  grids.forEach((grid, gridIndex) => {
+    grid.update();
+
+    if (frames % 100 === 0 && grid.invaders.lenght > 0) {
+      grid.invaders[Math.floor(Math.random() * grid.invaders.lenght)].shoot(
+        invaderProjectiles
+      );
+    }
+    for (let i = grid.invaers.lenght - 1; i >= 0; i--) {
+      const invader = grid.invaders[i];
+      invader.update({ velocity: grid.velocity });
+
+      for (let j = bombs.length - 1; j >= 0; i--) {
+        const bomb = bombs[j];
+
+        const invadersRadius = 15;
+
+        if (
+          Math.hypot(
+            invader.position.x - bomb.position.x,
+            invader.position.y - bomb.position.y
+          ) <
+            invadersRadius + bomb.radius &&
+          bomb.active
+        ) {
+          score += 50;
+          scoreEl.innerHTML = score;
+
+          grid.invaders.splice(i, 1);
+          createScoreLabel({
+            object: invader,
+            score: 50
+          });
+
+          createParticlesLabel({
+            object: invader,
+            fades: true
+          });
+        }
+      }
+
+      projectiles.forEach((projectile, j) => {
+        if (
+          projectile.position.y - projectile.radius <=
+            invader.position.y + invader.heigth &&
+          projectile.position.x + projectile.radius >= invader.position.x &&
+          projectile.position.x - projectile.radius <=
+            invader.position.x + invader.width &&
+          projectile.position.y + projectile.radius >= invader.position.y
+        ) {
+          setTimeout(() => {
+            const invaderFound = grid.invader.find(
+              (invader2) => invader2 === invader
+            );
+            const projectileFound = projectiles.find(
+              (projectile2) => projectile2 === projectile
+            );
+
+            if (invaderFound && projectileFound) {
+              score += 100;
+              scoreEl.innerHTML = score;
+
+              createScoreLabel({
+                object: invader
+              });
+
+              createParticles({
+                object: invader,
+                fades: true
+              });
+
+              audio.explode.play();
+              grid.invaders.splice(i, 1);
+              projectiles.splice(j, 1);
+            }
+          });
+        }
+      });
+    }
+  });
 }
