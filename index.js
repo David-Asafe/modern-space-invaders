@@ -417,3 +417,10 @@ document.querySelector("#startButton").addEventListener("click", () => {
   init();
   animate();
 });
+
+document.querySelector("#restartButton").addEventListener("click", () => {
+  audio.select.play();
+  document.querySelector("#restartScreen").style.display = "none";
+  init();
+  animate();
+})
