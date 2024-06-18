@@ -109,7 +109,7 @@ function endGame() {
   });
 }
 
-function Animation() {
+function animate() {
   if (!game.active) return;
   requestAnimationFrame(animate);
 
