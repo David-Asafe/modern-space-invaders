@@ -10,9 +10,9 @@ class Player {
 
     const image = new Image();
 
-    image.src = "./img/spaceship.png";
+    image.src = "./img/CLTNave.png";
     image.onload = () => {
-      const scale = 0.15;
+      const scale = 0.5;
       this.image = image;
       this.width = image.width * scale;
       this.height = image.height * scale;

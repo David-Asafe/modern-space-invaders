@@ -9,7 +9,7 @@ class Bomb {
     this.active = false;
 
     gsap.to(this, {
-      radius: 30
+      radius: 20
     });
   }
 
@@ -48,8 +48,8 @@ class Bomb {
     this.velocity.y = 0;
 
     gsap.to(this, {
-      radius: 200,
-      color: "red"
+      radius: 500,
+      color: "white"
     });
 
     gsap.to(this, {
@@ -64,7 +64,7 @@ class PowerUp {
   constructor({ position, velocity }) {
     this.position = position;
     this.velocity = velocity;
-    this.radius = 15;
+    this.radius = 10;
   }
 
   draw() {
